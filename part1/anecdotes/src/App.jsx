@@ -12,14 +12,30 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
   
-  const getRandomNumber = () => Math.ceil(Math.random() * anecdotes.length)
+  const getRandomNumber = () => Math.floor(Math.random() * anecdotes.length)
 
+  const votesArr = Array(anecdotes.length).fill(0).map(() => getRandomNumber())
+  
   const [selected, setSelected] = useState(getRandomNumber())
+  const [votes, setVotes] = useState(votesArr)
+
+  const increaseVote = () => {
+    const copyVotes =  [...votes]
+    copyVotes[selected] += 1
+    setVotes(copyVotes)
+  }
+
+  const maxVotedIndex = votes.indexOf(Math.max(...votes))
+  
 
   return (
     <div>
-      <p>{anecdotes[selected]}</p>
+      <h2>Anectode of the day</h2>
+      <p>{anecdotes[selected]}<br/>has {votes[selected]} votes</p>
       <button onClick={() => setSelected(getRandomNumber)}>Another anecdote</button>
+      <button onClick={increaseVote}>Vote</button>
+      <h2>Anectode with most votes</h2>
+      <p>{anecdotes[maxVotedIndex]}<br/>has {votes[maxVotedIndex]} votes</p>
     </div>
   )
 }
