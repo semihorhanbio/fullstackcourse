@@ -29,18 +29,26 @@ const App = () => {
 
   const handleSubmit = e => {
     e.preventDefault()
-    const personIsExists = persons.find(person => person.name === newPerson.name)
+    const existedPerson = persons.find(person => person.name === newPerson.name)
     
-    if(personIsExists) {
-      alert(`${newPerson.name} is already added to phonebook`)
-      return 
+    if(existedPerson) {
+      if(confirm(`${existedPerson.name} is already added to phonebook, replace the old number with a new one?`)) {
+        const changedPerson = {...existedPerson, phone: newPerson.phone}
+        personService.updateUser(changedPerson, changedPerson.id)
+          .then(changedUser => {
+            setPersons(persons.map(person => person.id !== changedUser.id ? person : changedUser))
+          })
+          .catch(err => console.error(err))
+      }
+      setNewPerson({name: '', phone: '', id: ''})
+      return
     }
     
     personService.create({...newPerson, id: persons.length + 1})
       .then(createdPerson => setPersons(persons.concat(createdPerson)))
       .catch(err => console.error(err))
     
-      setNewPerson({name: '', phone: '', id: 0})
+      setNewPerson({name: '', phone: '', id: ''})
   }
 
   const filterPerson = id => {
