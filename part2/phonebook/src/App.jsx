@@ -1,6 +1,6 @@
-import axios from 'axios'
 import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
+import Notification from './components/Notification'
 import PersonForm from './components/PersonForm'
 import personService from './services/personService'
 
@@ -11,6 +11,7 @@ const App = () => {
     { name: 'Arto Hellas', phone: '040-123456', id: 1 }
   ])
   const [newPerson, setNewPerson] = useState({name: '', phone: '', id: 0})
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() =>{
     personService.getPersons()
@@ -40,6 +41,9 @@ const App = () => {
           })
           .catch(err => console.error(err))
       }
+
+      setErrorMessage(`Changed ${existedPerson.name}`)
+      setTimeout(() => setErrorMessage(null), 2000)
       setNewPerson({name: '', phone: '', id: ''})
       return
     }
@@ -48,7 +52,9 @@ const App = () => {
       .then(createdPerson => setPersons(persons.concat(createdPerson)))
       .catch(err => console.error(err))
     
-      setNewPerson({name: '', phone: '', id: ''})
+    setErrorMessage(`Added ${newPerson.name}`)
+    setTimeout(() => setErrorMessage(null), 2000)
+    setNewPerson({name: '', phone: '', id: ''})
   }
 
   const filterPerson = id => {
@@ -67,6 +73,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <Filter 
         seacrhId={seacrhId}
         setSearchId={setSearchId}
