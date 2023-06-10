@@ -3,7 +3,7 @@ import { useEffect } from "react"
 import Weather from "./Weather"
 
 const CountryInfo = ({name, capital, area, languages, flag}) => {
-    const apiKey = 'f3a9817d1b4b1f6c7437b0b67aa51394'
+    const apiKey = '<apikeyhere>'
     const [weatherData, setWeatherData] = useState(null)
 
     useEffect(() => {
