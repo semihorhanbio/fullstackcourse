@@ -13,8 +13,8 @@ const App = () => {
   const [newPerson, setNewPerson] = useState({name: '', phone: '', id: 0})
 
   useEffect(() =>{
-    axios.get('http://localhost:3001/persons')
-      .then(res => setPersons(res.data))
+    personService.getPersons()
+      .then(data => setPersons(data))
       .catch(err => console.error(err))
   }, [])
   
