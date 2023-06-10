@@ -39,7 +39,7 @@ const App = () => {
           .then(changedUser => {
             setPersons(persons.map(person => person.id !== changedUser.id ? person : changedUser))
           })
-          .catch(err => console.error(err))
+          .catch(err => setErrorMessage(`Information of ${changedPerson.name} has already been removed from server`))
       }
 
       setErrorMessage(`Changed ${existedPerson.name}`)
