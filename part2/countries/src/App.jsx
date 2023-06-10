@@ -4,6 +4,7 @@ import CountryInfo from './components/CountryInfo'
 function App() {
   const [query, setQuery] = useState('')
   const [countries, setCountries] = useState([])
+  const [isFetch, setIsFetch] = useState(false)
 
   useEffect(() => {
     fetch(`https://studies.cs.helsinki.fi/restcountries/api/all`)
@@ -11,13 +12,17 @@ function App() {
       .then(data => setCountries(data))
       .catch(err => console.error(err))
 
-  }, [])
+  }, [isFetch])
 
   const filterCountries = (e) => {
     setQuery(e.target.value)
     setCountries(countries.filter(country => country.name.common.toLowerCase().includes(query.toLowerCase())))
+    
+    if(query === '') {
+      setIsFetch(!isFetch)
+    }
   }
-  console.log(countries.length)
+  console.log(countries)
   return (
     <>
       <label htmlFor="country">find countries</label>
@@ -27,6 +32,7 @@ function App() {
         value={query}
         onChange={(e) => filterCountries(e)} 
       />
+      
       {
         countries.length > 10 ? <p>Too many matches, specify another filter</p> 
         : countries.length === 1 ? <CountryInfo name={countries[0].name.common} capital={countries[0].capital[0]} area={countries[0].area} languages={Object.values(countries[0].languages)} flag={countries[0].flags} />
