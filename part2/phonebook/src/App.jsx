@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+import personService from './services/personService'
 
 const App = () => {
   const [seacrhId, setSearchId] = useState(0)
@@ -30,11 +31,16 @@ const App = () => {
     e.preventDefault()
     const personIsExists = persons.find(person => person.name === newPerson.name)
     
-    personIsExists ? 
-      alert(`${newPerson.name} is already added to phonebook`) :
-      setPersons(persons.concat({...newPerson, id: persons.length + 1}))
+    if(personIsExists) {
+      alert(`${newPerson.name} is already added to phonebook`)
+      return 
+    }
     
-    setNewPerson({name: '', phone: '', id: 0})
+    personService.create({...newPerson, id: persons.length + 1})
+      .then(createdPerson => setPersons(persons.concat(createdPerson)))
+      .catch(err => console.error(err))
+    
+      setNewPerson({name: '', phone: '', id: 0})
   }
 
   const filterPerson = id => {
