@@ -50,6 +50,12 @@ const App = () => {
     } 
   }
 
+  const handleDelete = id => {
+    personService.deleteUser(id)
+      .then(deletedUser => setPersons(persons.filter(person => person.id !== id)))
+      .catch(err => console.error(err))
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -67,7 +73,14 @@ const App = () => {
       />
       <h2>Numbers</h2>
       {
-        persons.map(person => <p key={person.name}>{person.name} {person.phone}</p>)     
+        persons.map(person => { 
+          return ( 
+            <div key={person.name}>
+              <p>{person.name} {person.phone}</p>
+              <button onClick={() => handleDelete(person.id)}>delete</button>
+            </div>
+          )}
+        )     
       }
     </div>
   )

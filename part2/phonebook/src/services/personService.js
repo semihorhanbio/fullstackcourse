@@ -7,10 +7,16 @@ const getPersons = async () => {
     return persons
 }
 
-const create = async (newObj) => {
+const create = async newObj => {
     const request = await axios.post(baseUrl, newObj)
     const response = await request.data
     return response
 }
 
-export default {getPersons, create}
+const deleteUser = async id => {
+    const response = await axios.delete(`${baseUrl}/${id}`)
+    const deletedUser = response.data
+    return deletedUser
+}
+
+export default {getPersons, create, deleteUser}
