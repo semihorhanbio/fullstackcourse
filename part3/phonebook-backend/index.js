@@ -4,6 +4,8 @@ import express from 'express'
 const PORT = 3001
 const app = express()
 
+app.use(express.json())
+
 app.get('/info', (req, res) => {
     res.send(
         `<p>
@@ -14,6 +16,14 @@ app.get('/info', (req, res) => {
 
 app.get('/api/persons', (req, res) => {
     res.json(persons)
+})
+
+app.post('/api/persons', (req, res) => {
+    const person = req.body
+    person.id = Math.floor(Math.random() * 100000)
+    persons.push(person)
+
+    res.json(person)
 })
 
 app.get('/api/persons/:id', (req, res) => {
