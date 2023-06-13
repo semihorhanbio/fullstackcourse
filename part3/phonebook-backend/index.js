@@ -23,4 +23,11 @@ app.get('/api/persons/:id', (req, res) => {
     person ? res.json(person) : res.sendStatus(404)
 })
 
+app.delete('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const newPersons = persons.filter(p => p.id !== id)
+
+    res.sendStatus(204)
+})
+
 app.listen(PORT, () => console.log('Listening on port', PORT))
