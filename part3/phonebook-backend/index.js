@@ -20,6 +20,11 @@ app.get('/api/persons', (req, res) => {
 
 app.post('/api/persons', (req, res) => {
     const person = req.body
+    if(!person.name || persons.find(p => p.name === person.name)) {
+        res.status(404).json({ error: 'name must be unique' })
+        return
+    }
+
     person.id = Math.floor(Math.random() * 100000)
     persons.push(person)
 
