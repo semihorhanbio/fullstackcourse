@@ -5,8 +5,10 @@ import morgan from 'morgan'
 const PORT = 3001
 const app = express()
 
+morgan.token('data', (req, res) => JSON.stringify(req.body))
+
 app.use(express.json())
-app.use(morgan('tiny'))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms - :data'))
 
 app.get('/info', (req, res) => {
     res.send(
